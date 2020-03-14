@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>VR Booru</title>
+		<!-- FOR ANGULAR ROUTING -->
+		<base href="/">
+		<!-- CSS  -->
+		<!-- load bootstrap from CDN and custom CSS -->
+		<link rel="stylesheet" href="assets/libs/bootstrap.min.css">
+		<link rel="stylesheet" href="assets/libs/font-awesome.min.css">
+		<link rel="stylesheet" href="assets/libs/animate.min.css">
+		<link rel="stylesheet" href="assets/css/style.min.css">
+
+		<!-- JS -->
+		<!-- load angular and angular-route via CDN -->
+		<script src="assets/libs/angular.js"></script>
+		<script src="assets/libs/angular-route.min.js"></script>
+		<script src="assets/libs/angular-animate.min.js"></script>
+		<script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script>
+		<script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-shader.min.js"></script>
+
+		<!-- services -->
+		<script src="app/services/booruService.js"></script>
+
+		<!-- controllers -->
+		<script src="app/controllers/homeCtrl.js"></script>
+		<script src="app/controllers/viewerCtrl.js"></script>
+
+		<script src="https://storage.googleapis.com/vrview/2.0/build/vrview.min.js"></script>
+
+		<!-- main Angular app files -->
+		<script src="app/app.routes.js"></script>
+		<script src="app/app.js"></script>
+	</head>
+	<body class="container" ng-app="myApp">
+ 		<main>
+			<div id="content-views" ng-view>
+			</div>
+ 		</main>
+	</body>
+</html>
+</html>

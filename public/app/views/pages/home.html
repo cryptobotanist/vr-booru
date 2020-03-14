@@ -1,0 +1,19 @@
+<div class="row">
+  <form class="form-inline" ng-submit="home.searchImages()">
+    <label class="sr-only" for="inlineFormInput2">Tags</label>
+    <input type="text" ng-model="home.query" class="form-control mb-2 mr-sm-2" id="inlineFormInput2" placeholder="some tags here">
+    <button type="submit"  class="btn btn-primary mb-2">Search</button>
+  </form>
+  <button class="btn btn-danger mb-2" ng-click="home.localRemix()">Local Remix</button>
+</div>
+<div class="row" ng-if="home.imageArray.length > 0">
+  <h4>Results</h4>
+  <div class="row" id="search-results">
+    <div class='single-search-result' ng-repeat="post in home.imageArray track by $index">
+      <a href="#" ng-click="home.setCurrentImage($index)">
+        <img class='result-content' ng-src="{{home.localUrl(post._data.image)}}" 
+        ng-class="{selected: $index == home.selectedImageId }"/>
+      </a>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,9 @@
+bower_components/*
+node_modules/*
+public/assets/libs/*
+public/assets/css/*.min.css
+public/assets/fonts/*
+public/assets/img/download/**/**
+.DS_Store
+*/.DS_store
+*/*/.DS_store
