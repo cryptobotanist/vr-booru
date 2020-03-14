@@ -7,6 +7,11 @@ npm install
 npm start
 ```
 
+## Requirements
+WebVR now requires an HTTPS connection, so you need an SSL cert.
+Run ```openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365``` to
+generate key and cert files and configure the passphrase in the config file.
+
 Point your browser to ```localhost:8080``` to select some tags and click the first
 image that you want to view in the viewer endpoints.
 
@@ -18,7 +23,7 @@ a hands free experience.
 ## Configuring it
 Right now there's not so much to config. But you can edit whatever you want.
 Some sites are supported, other don't. Should be enough.
-Searches 30 pictures in the selected site by default.
+Searches 40 pictures in the selected site by default.
 
 ## Disclaimer
 VR mode stretches images to fit the canvas. GIFs do not work on VR mode yet.

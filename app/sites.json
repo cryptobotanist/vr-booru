@@ -11,12 +11,17 @@
 	},
 	"realbooru.com": {
 		"domain": "realbooru.com",
-		"sample_template" : "https://realbooru.com/samples/{directory}/{image}",
+		"sample_template" : "https://realbooru.com/samples/{directory}/sample_{image}",
         "image_template" : "https://realbooru.com/images/{directory}/{image}"
 	},
 	"tbib.org": {
 		"domain": "tbib.org",
 		"sample_template" : "https://tbib.org/images/{directory}/{image}",
         "image_template" : "https://tbib.org/images/{directory}/{image}"
+	},
+	"safebooru.org": {
+		"domain": "safebooru.org",
+		"sample_template" : "https://safebooru.org/samples/{directory}/sample_{image}",
+        "image_template" : "https://safebooru.org/images/{directory}/{image}"
 	}
 }

@@ -1,4 +1,6 @@
 var express    = require('express');
+var https = require('https');
+var fs = require('fs');
 var app        = express();
 var bodyParser = require('body-parser');
 var morgan     = require('morgan');
@@ -31,5 +33,10 @@ app.get('*', function(req, res) {
 	res.sendFile(path.join(__dirname + '/public/app/views/index.html'));
 });
 
-app.listen(config.port);
+https.createServer({
+    key: fs.readFileSync('./key.pem'),
+    cert: fs.readFileSync('./cert.pem'),
+    passphrase: config.ssl_passphrase
+}, app)
+.listen(config.port);
 console.log('Magic happens on port ' + config.port);

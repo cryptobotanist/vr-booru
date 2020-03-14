@@ -4,6 +4,7 @@
   "description": "",
   "main": "server.js",
   "dependencies": {
+    "aframe": "^1.0.4",
     "angular": "^1.7.9",
     "angular-animate": "^1.7.2",
     "angular-route": "^1.7.2",
@@ -20,6 +21,8 @@
     "nodemon": "^1.10.0"
   },
   "devDependencies": {
+    "aframe-gif-component": "^0.2.0",
+    "aframe-gif-shader": "^0.9.1",
     "gulp": "^4.0.0",
     "gulp-less": "^4.0.1",
     "gulp-nodemon": "^2.5.0"

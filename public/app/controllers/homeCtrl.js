@@ -9,12 +9,15 @@ angular.module('homeCtrl', [])
 	vm.imagesRolling = false;
 	vm.selectedImageId = -1;
 	vm.selectedSite = null;
+	vm.imageCount = 40;
+	vm.rollDelay = 5000; // 5 seconds
 
 	vm.availableSites = [
-		{name : "Gelbooru", short: "gb" },
-		{name : "Rule34", short: "r34" },
-		{name : "RealBooru", short: "rb" },
-		{name : "TheBigImageBoard", short: "tbib" },
+		{name : "Safebooru", short: "sb", explicit: false },
+		{name : "Gelbooru", short: "gb", explicit: true },
+		{name : "Rule34", short: "r34", explicit: true },
+		{name : "RealBooru", short: "rb", explicit: true },
+		{name : "TheBigImageBoard", short: "tbib", explicit: true },
 	]
 
 	var rollImages = function(){
@@ -34,7 +37,7 @@ angular.module('homeCtrl', [])
 				Booru.setCurrentImage(vm.imageArray[vm.selectedImageId]);
 			}
 			rollImages();
-		}, 6000)
+		}, vm.rollDelay)
 	};
 
 	vm.fixUrl = function(url){
@@ -48,7 +51,8 @@ angular.module('homeCtrl', [])
 	vm.searchImages = function(event) {
 		event.preventDefault();
 		vm.mixMode = false;
-		Booru.searchBooru(vm.selectedSite.short, vm.query, 40, true)
+		resetRollImages();
+		Booru.searchBooru(vm.selectedSite.short, vm.query, vm.imageCount, vm.selectedSite.explicit)
 			.then(function(ret){
 				console.log("SEARCHED")
 				vm.imageArray = ret.data;
@@ -58,7 +62,8 @@ angular.module('homeCtrl', [])
 
 	vm.localRemix = function(event) {
 		vm.mixMode = true;
-		Booru.localMix(40)
+		resetRollImages();
+		Booru.localMix(vm.imageCount)
 			.then(function(ret){
 				console.log("REMIXED")
 				vm.imageArray = ret.data;
@@ -67,11 +72,15 @@ angular.module('homeCtrl', [])
 	}
 
 	vm.setCurrentImage = function(image_id) {
-		vm.selectedImageId = -1;
-		vm.imagesRolling = false;
+		resetRollImages();
 		vm.selectedImageId = image_id;
 		Booru.setCurrentImage(vm.imageArray[image_id]);
 		vm.imagesRolling = true;
+	}
+
+	var resetRollImages = function(){
+		vm.selectedImageId = -1;
+		vm.imagesRolling = false;
 	}
 
 	rollImages();
