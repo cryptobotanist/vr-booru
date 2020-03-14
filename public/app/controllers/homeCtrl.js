@@ -8,6 +8,14 @@ angular.module('homeCtrl', [])
 	vm.mixMode = false;
 	vm.imagesRolling = false;
 	vm.selectedImageId = -1;
+	vm.selectedSite = null;
+
+	vm.availableSites = [
+		{name : "Gelbooru", short: "gb" },
+		{name : "Rule34", short: "r34" },
+		{name : "RealBooru", short: "rb" },
+		{name : "TheBigImageBoard", short: "tbib" },
+	]
 
 	var rollImages = function(){
 		$timeout(function() {
@@ -37,9 +45,10 @@ angular.module('homeCtrl', [])
 		return Booru.localUrl(name) + '?decache=' + Date.now() ;
 	}
 
-	vm.searchImages = function() {
+	vm.searchImages = function(event) {
+		event.preventDefault();
 		vm.mixMode = false;
-		Booru.searchBooru("gb", vm.query, 20, true)
+		Booru.searchBooru(vm.selectedSite.short, vm.query, 40, true)
 			.then(function(ret){
 				console.log("SEARCHED")
 				vm.imageArray = ret.data;
@@ -47,9 +56,9 @@ angular.module('homeCtrl', [])
 			})
 	}
 
-	vm.localRemix = function() {
+	vm.localRemix = function(event) {
 		vm.mixMode = true;
-		Booru.localMix(20)
+		Booru.localMix(40)
 			.then(function(ret){
 				console.log("REMIXED")
 				vm.imageArray = ret.data;

@@ -1,4 +1,5 @@
 var config = require('../../config')
+var site_config = require('../sites.json')
 var Booru 	= require('booru');
 var request = require('request');
 var downloader = require('image-downloader');
@@ -60,9 +61,9 @@ async function fastProcessImages(images) {
 async function downloadIMG(url, dest) {
   try {
     const { filename, image } = await downloader.image({url: url, dest: dest});
-    console.log(filename) // => /path/to/dest/image.jpg
+    //console.log(filename) // => /path/to/dest/image.jpg
   } catch (e) {
-    console.error(e)
+    
   }
 }
 
@@ -109,15 +110,25 @@ module.exports = function(app, express) {
         limit = parseInt(req.query.limit) || 10;
         tags.push('-webm');
         tags.push('-furry');
+        tags.push('-anthro');
         tags.push('-lolicon');
         tags.push('-shotacon');
 
         Booru.search(site, tags, {limit: limit, random: true})
         .then( async function(images){
           processedImages = await fastProcessImages(images);
+          retImages = [];
           processedImages.forEach( pimg => {
-						console.log(fixUrl(pimg._data.file_url))
-            downloadIMG(fixUrl(pimg._data.file_url), './public/assets/img/download/')
+            var sampleUrl = site_config[pimg.booru.domain].sample_template
+            var imageUrl = site_config[pimg.booru.domain].image_template
+            sampleUrl = sampleUrl.replace("{directory}", pimg._data.directory)
+            sampleUrl = sampleUrl.replace("{image}", pimg._data.image)
+            imageUrl = imageUrl.replace("{directory}", pimg._data.directory)
+            imageUrl = imageUrl.replace("{image}", pimg._data.image)
+            console.log(fixUrl(imageUrl))
+            // Try to get both, one of them will work. Do not handle the exception
+            downloadIMG(fixUrl(sampleUrl), './public/assets/img/download/')
+            downloadIMG(fixUrl(imageUrl), './public/assets/img/download/')
           });
           console.log("DONE PROCESSING!")
           res.json(processedImages);

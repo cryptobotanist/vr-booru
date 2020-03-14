@@ -1,0 +1,22 @@
+{
+	"gelbooru.com": {
+		"domain": "gelbooru.com",
+        "sample_template" : "https://img2.gelbooru.com/samples/{directory}/sample_{image}",
+        "image_template" : "https://img2.gelbooru.com/images/{directory}/{image}"
+	},
+	"rule34.xxx": {
+		"domain": "rule34.xxx",
+        "sample_template" : "https://img.rule34.xxx/samples/{directory}/sample_{image}",
+        "image_template" : "https://rule34.xxx/images/{directory}/{image}"
+	},
+	"realbooru.com": {
+		"domain": "realbooru.com",
+		"sample_template" : "https://realbooru.com/samples/{directory}/{image}",
+        "image_template" : "https://realbooru.com/images/{directory}/{image}"
+	},
+	"tbib.org": {
+		"domain": "tbib.org",
+		"sample_template" : "https://tbib.org/images/{directory}/{image}",
+        "image_template" : "https://tbib.org/images/{directory}/{image}"
+	}
+}

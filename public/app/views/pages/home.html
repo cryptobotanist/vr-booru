@@ -1,10 +1,12 @@
 <div class="row">
-  <form class="form-inline" ng-submit="home.searchImages()">
+  <form class="form-inline" ng-submit="home.searchImages($event)">
     <label class="sr-only" for="inlineFormInput2">Tags</label>
     <input type="text" ng-model="home.query" class="form-control mb-2 mr-sm-2" id="inlineFormInput2" placeholder="some tags here">
+    <select ng-model="home.selectedSite" ng-options="s.name for s in home.availableSites" 
+    ng-init="home.selectedSite = home.availableSites[0]" class="form-control mb-2 mr-sm-2"></select>
     <button type="submit"  class="btn btn-primary mb-2">Search</button>
   </form>
-  <button class="btn btn-danger mb-2" ng-click="home.localRemix()">Local Remix</button>
+  <button class="btn btn-danger mb-2" ng-click="home.localRemix($event)">Local Remix</button>
 </div>
 <div class="row" ng-if="home.imageArray.length > 0">
   <h4>Results</h4>
