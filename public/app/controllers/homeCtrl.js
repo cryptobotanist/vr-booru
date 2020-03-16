@@ -9,7 +9,7 @@ angular.module('homeCtrl', [])
 	vm.imagesRolling = false;
 	vm.selectedImageId = -1;
 	vm.selectedSite = null;
-	vm.imageCount = 40;
+	vm.imageCount = 20;
 	vm.rollDelay = 5000; // 5 seconds
 
 	vm.availableSites = [
@@ -52,7 +52,7 @@ angular.module('homeCtrl', [])
 		event.preventDefault();
 		vm.mixMode = false;
 		resetRollImages();
-		Booru.searchBooru(vm.selectedSite.short, vm.query, vm.imageCount, vm.selectedSite.explicit)
+		Booru.searchBooru(vm.selectedSite.short, vm.query, 20, vm.selectedSite.explicit)
 			.then(function(ret){
 				console.log("SEARCHED")
 				vm.imageArray = ret.data;
@@ -63,7 +63,7 @@ angular.module('homeCtrl', [])
 	vm.localRemix = function(event) {
 		vm.mixMode = true;
 		resetRollImages();
-		Booru.localMix(vm.imageCount)
+		Booru.localMix(20)
 			.then(function(ret){
 				console.log("REMIXED")
 				vm.imageArray = ret.data;
