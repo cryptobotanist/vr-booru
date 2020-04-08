@@ -24,24 +24,33 @@ html, body {
 
 #search-results {
 	display: flex;
-	justify-content: space-around;
+	flex-flow: row wrap;
+	margin-left: -3px; /* Adjustment for the gutter */
+	width: 100%;
 
 	.single-search-result{
-		width: 120px;
-		height: 120px;
-		margin: 10px;
-		text-align: center;
+		flex: auto;
+		height: 280px;
+		min-width: 300px;
+		margin: 0 3px 3px 0; /* Some gutter */
+		border: 1px solid black;
+	}
 
-		.result-content{
-			max-width: 120px;
-			max-height: 120px;
-			border-radius: 5px;
-			border: 2px solid black;
-		}
+	.single-search-result.selected{
+		border: 2px solid @magenta;
+	}
 
-		.result-content.selected{
-				border: 2px solid @magenta;
-		}
+	.single-search-result:nth-child(4n+1) {
+		width: 385px;
+	}
+	.single-search-result:nth-child(4n+2) {
+		width: 340px;
+	}
+	.single-search-result:nth-child(4n+3) {
+		width: 310px;
+	}
+	.single-search-result:nth-child(4n+4) {
+		width: 420px;
 	}
 }
 

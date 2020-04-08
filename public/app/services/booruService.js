@@ -3,10 +3,11 @@ angular.module('booruService', [])
     var booruFactory = {};
 
     booruFactory.setCurrentImage = function(booruResult) {
+      console.log(booruResult)
       return $http.post('/api/current/image', {booruResult:
         { booru_url: booruResult.booru.domain, file_url: booruResult.file_url,
-          file_name: booruResult._data.image, file_encoded: booruResult.base64,
-          local_url: "./assets/img/download/" + booruResult._data.image }
+          file_name: booruResult.data.image, file_encoded: booruResult.base64,
+          local_url: "./assets/img/download/" + booruResult.data.image }
       } )
     }
 

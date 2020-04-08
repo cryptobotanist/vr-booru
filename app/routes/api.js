@@ -96,7 +96,7 @@ module.exports = function(app, express) {
     ret = [];
     var subfiles = files.slice(0, limit);
     subfiles.forEach(file => {
-        obj = {_data: {image: file}, booru: {domain: "local"}, file_url: "./assets/img/download"+file};
+        obj = {data: {image: file}, booru: {domain: "local"}, file_url: "./assets/img/download"+file};
         ret.push(obj);
       });
     res.json(ret);
@@ -121,10 +121,10 @@ module.exports = function(app, express) {
           processedImages.forEach( pimg => {
             var sampleUrl = site_config[pimg.booru.domain].sample_template
             var imageUrl = site_config[pimg.booru.domain].image_template
-            sampleUrl = sampleUrl.replace("{directory}", pimg._data.directory)
-            sampleUrl = sampleUrl.replace("{image}", pimg._data.image)
-            imageUrl = imageUrl.replace("{directory}", pimg._data.directory)
-            imageUrl = imageUrl.replace("{image}", pimg._data.image)
+            sampleUrl = sampleUrl.replace("{directory}", pimg.data.directory)
+            sampleUrl = sampleUrl.replace("{image}", pimg.data.image)
+            imageUrl = imageUrl.replace("{directory}", pimg.data.directory)
+            imageUrl = imageUrl.replace("{image}", pimg.data.image)
             console.log(fixUrl(imageUrl))
             // Try to get both, one of them will work. Do not handle the exception
             downloadIMG(fixUrl(sampleUrl), './public/assets/img/download/')

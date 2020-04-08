@@ -9,7 +9,7 @@ angular.module('homeCtrl', [])
 	vm.imagesRolling = false;
 	vm.selectedImageId = -1;
 	vm.selectedSite = null;
-	vm.imageCount = 20;
+	vm.imageCount = 10;
 	vm.rollDelay = 5000; // 5 seconds
 
 	vm.availableSites = [
@@ -49,10 +49,11 @@ angular.module('homeCtrl', [])
 	}
 
 	vm.searchImages = function(event) {
+		console.log("SEARCHING")
 		event.preventDefault();
 		vm.mixMode = false;
 		resetRollImages();
-		Booru.searchBooru(vm.selectedSite.short, vm.query, 20, vm.selectedSite.explicit)
+		Booru.searchBooru(vm.selectedSite.short, vm.query, vm.imageCount, vm.selectedSite.explicit)
 			.then(function(ret){
 				console.log("SEARCHED")
 				vm.imageArray = ret.data;
@@ -63,7 +64,7 @@ angular.module('homeCtrl', [])
 	vm.localRemix = function(event) {
 		vm.mixMode = true;
 		resetRollImages();
-		Booru.localMix(20)
+		Booru.localMix(vm.imageCount)
 			.then(function(ret){
 				console.log("REMIXED")
 				vm.imageArray = ret.data;
@@ -75,7 +76,6 @@ angular.module('homeCtrl', [])
 		resetRollImages();
 		vm.selectedImageId = image_id;
 		Booru.setCurrentImage(vm.imageArray[image_id]);
-		vm.imagesRolling = true;
 	}
 
 	var resetRollImages = function(){
@@ -83,6 +83,13 @@ angular.module('homeCtrl', [])
 		vm.imagesRolling = false;
 	}
 
-	rollImages();
+	vm.startRolling = function(){
+		vm.imagesRolling = true;
+	}
 
+	vm.stopRolling = function(){
+		vm.imagesRolling = false;
+	}
+
+	rollImages();
 });

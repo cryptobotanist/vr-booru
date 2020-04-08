@@ -43,13 +43,11 @@ angular.module('viewerCtrl', [])
 		document.getElementById("panel-6").setAttribute("rotation", rotation)
 	});
 
-
-
 	var viewerRefresh = function(){
 		$timeout(function() {
 			vm.getCurrentImage();
 			viewerRefresh();
-		}, 3000)
+		}, 1000)
 	};
 
 	viewerRefresh();
