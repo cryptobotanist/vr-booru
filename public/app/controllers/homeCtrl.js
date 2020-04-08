@@ -1,5 +1,5 @@
 angular.module('homeCtrl', [])
-.controller('homeController', function($rootScope, $location, $timeout, Booru) {
+.controller('homeController', function($scope, $interval, Booru) {
 	var vm = this;
 
 	vm.query = "";
@@ -10,7 +10,7 @@ angular.module('homeCtrl', [])
 	vm.selectedImageId = -1;
 	vm.selectedSite = null;
 	vm.imageCount = 10;
-	vm.rollDelay = 5000; // 5 seconds
+	vm.rollDelay = 5;
 
 	vm.availableSites = [
 		{name : "Safebooru", short: "sb", explicit: false },
@@ -20,24 +20,45 @@ angular.module('homeCtrl', [])
 		{name : "TheBigImageBoard", short: "tbib", explicit: true },
 	]
 
-	var rollImages = function(){
-		$timeout(function() {
-			if (vm.imagesRolling){
-				if ((vm.selectedImageId + 1) % vm.imageCount == 0){
-					if (vm.mixMode){
-						vm.localRemix();
-					} else {
-						vm.searchImages();
-					}
-					vm.selectedImageId = 0;
-					vm.imagesRolling = true;
+	vm.imageCountSliderOptions = {
+		floor: 5,
+		ceil: 30,
+		step: 5,
+		showTicks: true,
+		translate: function(value) {
+			return 'Load ' + value + ' images';
+		}
+	}
+
+	vm.delaySliderOptions = {
+		floor: 1,
+		ceil: 10,
+		step: 1,
+		showTicks: true,
+		translate: function(value) {
+			return value + ' s';
+		}
+	}
+
+	vm.getDefaultImg = function() {
+		return "/assets/img/dummy.png"
+	}
+
+	var rollImage = function(){
+		if (vm.imagesRolling){
+			if ((vm.selectedImageId + 1) % vm.imageArray.length == 0){
+				if (vm.mixMode){
+					localRemix();
 				} else {
-					vm.selectedImageId = (vm.selectedImageId + 1) % vm.imageCount;
+					searchImages();
 				}
-				Booru.setCurrentImage(vm.imageArray[vm.selectedImageId]);
+				vm.selectedImageId = 0;
+				vm.imagesRolling = true;
+			} else {
+				vm.selectedImageId = (vm.selectedImageId + 1) % vm.imageArray.length;
 			}
-			rollImages();
-		}, vm.rollDelay)
+			Booru.setCurrentImage(vm.imageArray[vm.selectedImageId]);
+		}
 	};
 
 	vm.fixUrl = function(url){
@@ -45,30 +66,41 @@ angular.module('homeCtrl', [])
 	}
 
 	vm.localUrl = function(name){
-		return Booru.localUrl(name) + '?decache=' + Date.now() ;
+		return Booru.localUrl(name);
 	}
 
-	vm.searchImages = function(event) {
-		console.log("SEARCHING")
+	vm.doSearchImages = function(event){
 		event.preventDefault();
-		vm.mixMode = false;
-		resetRollImages();
-		Booru.searchBooru(vm.selectedSite.short, vm.query, vm.imageCount, vm.selectedSite.explicit)
-			.then(function(ret){
-				console.log("SEARCHED")
-				vm.imageArray = ret.data;
-				vm.imageCount = ret.data.length;
-			})
+		searchImages();
 	}
 
-	vm.localRemix = function(event) {
+	searchImages = function() {
+		if(vm.query != ""){
+			console.log("SEARCHING");
+			vm.mixMode = false;
+			resetRollImages();
+			vm.imageArray = [];
+			Booru.searchBooru(vm.selectedSite.short, vm.query, vm.imageCount, vm.selectedSite.explicit)
+				.then(function(ret){
+					console.log("SEARCHED")
+					vm.imageArray = ret.data;
+				});
+		}
+	}
+
+	vm.doLocalRemix = function(event){
+		event.preventDefault();
+		localMix();
+	}
+
+	localRemix = function() {
 		vm.mixMode = true;
 		resetRollImages();
+		vm.imageArray = [];
 		Booru.localMix(vm.imageCount)
 			.then(function(ret){
 				console.log("REMIXED")
 				vm.imageArray = ret.data;
-				vm.imageCount = ret.data.length;
 			})
 	}
 
@@ -83,13 +115,17 @@ angular.module('homeCtrl', [])
 		vm.imagesRolling = false;
 	}
 
-	vm.startRolling = function(){
+	vm.startRolling = function(event){
 		vm.imagesRolling = true;
 	}
 
-	vm.stopRolling = function(){
+	vm.stopRolling = function(event){
 		vm.imagesRolling = false;
 	}
 
-	rollImages();
+	rollImgInterval = $interval(rollImage, vm.rollDelay*1000);
+
+	$scope.$on("$destroy", function(){
+        $interval.cancel(rollImgInterval);
+    });
 });

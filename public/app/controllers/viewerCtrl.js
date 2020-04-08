@@ -1,25 +1,26 @@
 angular.module('viewerCtrl', [])
-.controller('viewerController', function($rootScope, $location, $timeout, Booru) {
+.controller('viewerController', function($scope, $interval, Booru) {
 	var vm = this;
 
-	var setReferrer = function(referrer){
-		delete window.document.referrer;
-		window.document.__defineGetter__('referrer', function () {
-				return referrer;
-		});
-	}
+	vm.img_data = {};
 
-	vm.img_data;
+	vm.hasImage = function(){
+		if (typeof(vm.img_data.file_name) === "undefined"){
+			return false;
+		} else {
+			return true;
+		}
+	}
 
 	vm.getCurrentImage = function(){
 		Booru.getCurrentImage()
 			.then(function(ret){
-				//setReferrer(ret.data.booru_url);
 				vm.img_data = ret.data;
-				vm.img_data.file_url = vm.img_data.file_url.replace('/images', '//images');
-				ppanels = document.getElementsByClassName("pornpanel")
-				for (let p of ppanels) {
-				   p.setAttribute("src", './assets/img/download/' + vm.img_data.file_name );
+				if (vm.hasImage()){
+					ppanels = document.getElementsByClassName("pornpanel")
+					for (let p of ppanels) {
+					   p.setAttribute("src", './assets/img/download/' + vm.img_data.file_name );
+					}
 				}
 			})
 	}
@@ -43,13 +44,10 @@ angular.module('viewerCtrl', [])
 		document.getElementById("panel-6").setAttribute("rotation", rotation)
 	});
 
-	var viewerRefresh = function(){
-		$timeout(function() {
-			vm.getCurrentImage();
-			viewerRefresh();
-		}, 1000)
-	};
+	refreshImgInterval = $interval(vm.getCurrentImage, 1000);
 
-	viewerRefresh();
+	$scope.$on("$destroy", function(){
+        $interval.cancel(refreshImgInterval);
+    });
 
 });

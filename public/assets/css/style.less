@@ -15,18 +15,100 @@ body  {
 html, body {
     height: 100%;
     margin: 0;
-    padding: 0;
+	padding: 0;
+	overflow-x: hidden;
 }
 
-#content-views {
-	position: relative;
+.rzslider{
+	width: 200px;
+
+	.rz-bar {
+		background: rgb(126, 126, 126);
+		height: 2px;
+	}
+	
+	.rz-selection {
+		background: rgb(126, 126, 126);
+	}
+	
+	.rz-pointer {
+		width: 8px;
+		height: 16px;
+		top: auto; /* to remove the default positioning */
+		bottom: 0;
+		background-color: #333;
+		border-top-left-radius: 3px;
+		border-top-right-radius: 3px;
+	}
+	
+	.rz-pointer:after {
+		display: none;
+	}
+	
+	.rz-bubble {
+		bottom: 14px;
+	}
+	
+	.rz-limit {
+		font-weight: bold;
+		color: rgb(126, 126, 126);
+	}
+	
+	.rz-tick {
+		width: 10px;
+		height: 10px;
+		margin-left: 0px;
+		border-radius: 100%;
+		background: rgb(126, 126, 126);
+		top: -1px;
+	}
+	
+	.rz-tick.rz-selected {
+		background: rgb(126, 126, 126);
+	}
 }
+
+.btn {
+	margin-left: 5px;
+}
+
+.navbar{
+	z-index: 999;
+}
+
+.form-control{
+	display: inline-block;
+	margin-bottom: 0px !important;
+}
+
+#main-content {
+	position: relative;
+	margin-top: 20px;
+}
+
+#content-views.ng-enter, #content-views.ng-leave{
+	width:100%;
+	position:absolute;
+}
+
+#content-views.ng-enter{
+	-webkit-animation: fadeInRight 0.5s both ease-in-out;
+	-moz-animation: fadeInRight 0.5s both ease-in-out;
+	animation: fadeInRight 0.5s both ease-in-out;
+}
+
+#content-views.ng-leave{
+	-webkit-animation: fadeOutLeft 0.5s both ease-in-out;
+	-moz-animation: fadeOutLeft 0.5s both ease-in-out;
+	animation: fadeOutLeft 0.5s both ease-in-out;
+}
+
 
 #search-results {
 	display: flex;
 	flex-flow: row wrap;
-	margin-left: -3px; /* Adjustment for the gutter */
 	width: 100%;
+	margin-top: 10px;
 
 	.single-search-result{
 		flex: auto;
@@ -34,6 +116,27 @@ html, body {
 		min-width: 300px;
 		margin: 0 3px 3px 0; /* Some gutter */
 		border: 1px solid black;
+		overflow: hidden;
+		cursor: pointer;
+		background-image: url('../img/dummy.png');
+		background-position: center;
+		background-size: cover;
+
+		img {
+			width: 100%;
+			height: 100%;
+			display: block;
+			object-fit: cover;
+			object-position: center;
+		}
+
+		.img-loading{
+			display: none;
+		}
+
+		.img-loaded{
+			display: block;
+		}
 	}
 
 	.single-search-result.selected{
@@ -54,12 +157,17 @@ html, body {
 	}
 }
 
-.viewer-result{
-	padding: 0;
-  display: block;
-  margin: 0 auto;
-  max-height: 100%;
-  max-width: 100%;
+.image-loader{
+	height: 860px;
+	text-align: center;
+
+	.viewer-result{
+		width: 100%;
+		height: 100%;
+		display: block;
+		object-fit: contain;
+		object-position: center;
+	}
 }
 
 #vr-show{

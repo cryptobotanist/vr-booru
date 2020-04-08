@@ -8,8 +8,9 @@
 		<!-- CSS  -->
 		<!-- load bootstrap from CDN and custom CSS -->
 		<link rel="stylesheet" href="assets/libs/bootstrap.min.css">
-		<link rel="stylesheet" href="assets/libs/font-awesome.min.css">
+		<link rel="stylesheet" href="assets/libs/fontawesome-free/css/all.min.css">
 		<link rel="stylesheet" href="assets/libs/animate.min.css">
+		<link rel="stylesheet" href="assets/libs/rzslider.min.css">
 		<link rel="stylesheet" href="assets/css/style.min.css">
 
 		<!-- JS -->
@@ -17,12 +18,14 @@
 		<script src="assets/libs/angular.js"></script>
 		<script src="assets/libs/angular-route.min.js"></script>
 		<script src="assets/libs/angular-animate.min.js"></script>
+		<script src="assets/libs/rzslider.min.js"></script>
 		<script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
 
 		<!-- services -->
 		<script src="app/services/booruService.js"></script>
 
 		<!-- controllers -->
+		<script src="app/controllers/headerCtrl.js"></script>
 		<script src="app/controllers/homeCtrl.js"></script>
 		<script src="app/controllers/viewerCtrl.js"></script>
 
@@ -32,7 +35,28 @@
 	</head>
 	<body ng-app="vrBooruApp">
 		<main>
-			<div id="content-views" ng-view></div>
+			<nav class="navbar navbar-expand-lg navbar-light bg-light" ng-controller="headerController">
+				<a class="navbar-brand" href="/"> <i class="fas fa-pepper-hot"></i> VRBooru</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				  <span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				  <ul class="navbar-nav mr-auto">
+					<li class="nav-item" ng-class="{ active: isActive('/')}">
+					  <a class="nav-link" href="/"> <i class="fas fa-search"></i> Search</a>
+					</li>
+					<li class="nav-item" ng-class="{ active: isActive('/viewer')}">
+					  <a class="nav-link" href="/viewer"><i class="fas fa-photo-video"></i> Viewer</a>
+					</li>
+					<li class="nav-item" ng-class="{ active: isActive('/vr')}">
+					  <a class="nav-link" href="/vr"><i class="fas fa-vr-cardboard"></i> VR Viewer</a>
+					</li>
+				  </ul>
+				</div>
+			</nav>
+			<div id="main-content">
+				<div id="content-views" ng-view></div>
+			</div>
 		</main>
 	</body>
 </html>

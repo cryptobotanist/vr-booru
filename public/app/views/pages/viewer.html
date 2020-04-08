@@ -1,23 +1,9 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">VRBooru</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/viewer">Viewer</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/vr">VR Viewer</a>
-        </li>
-      </ul>
+<div class="container" ng-if="viewer.hasImage()">
+    <div class="image-loader">
+      <img class='viewer-result' ng-src={{viewer.img_data.local_url}} />
     </div>
-  </nav>
-<div class="container">
-    <img class='viewer-result' ng-src={{viewer.img_data.local_url+Date.now()}} />
+</div>
+<div class="container" ng-if="!viewer.hasImage()">
+  <h2>Go search some stuff first!</h2>
 </div>
 

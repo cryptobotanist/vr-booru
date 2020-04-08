@@ -1,39 +1,29 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">VRBooru</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/viewer">Viewer</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/vr">VR Viewer</a>
-      </li>
-    </ul>
-    <form ng-submit="home.searchImages($event)" class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="search" ng-model="home.query" id="inlineFormInput2" placeholder="Drop some tags" aria-label="Search">
-      <select ng-model="home.selectedSite" ng-options="s.name for s in home.availableSites" 
-        ng-init="home.selectedSite = home.availableSites[0]" class="form-control mb-2 mr-sm-2"></select>
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    </form>
-    <button ng-click="home.localRemix($event)" class="btn btn-outline-danger my-2 my-sm-0" type="submit">Local Remix</button>
-  </div>
-</nav>
 <div class="container">
+  <form ng-submit="home.doSearchImages($event)" class="form-inline my-2 my-lg-0">
+    <input class="form-control mr-sm-2" type="search" ng-model="home.query" id="inlineFormInput2" placeholder="Drop some tags" aria-label="Search">
+    <select ng-model="home.selectedSite" ng-options="s.name for s in home.availableSites"
+      ng-init="home.selectedSite = home.availableSites[0]" class="form-control mb-2 mr-sm-2"></select>
+    <rzslider rz-slider-model="home.imageCount" rz-slider-options="home.imageCountSliderOptions"></rzslider>
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    <button ng-click="home.doLocalRemix($event)" class="btn btn-outline-danger my-2 my-sm-0">Local Remix</button>
+  </form>
   <div class="row" ng-if="home.imageArray.length > 0">
-    <h4>Results</h4>
-    <button ng-if="!home.imagesRolling" ng-click="home.startRolling()" class="btn btn-success my-2 my-sm-0" type="submit">Start Rolling</button>
-    <button ng-if="home.imagesRolling" ng-click="home.stopRolling()" class="btn btn-warning my-2 my-sm-0" type="submit">Stop Rolling</button>
-    <div class="row" id="search-results">
-      <div class='single-search-result' ng-repeat="post in home.imageArray track by $index"
-        ng-click="home.setCurrentImage($index)" ng-class="{selected: $index == home.selectedImageId }"
-        backImg="{{home.localUrl(post.data.image)}}"
-        style="background-image: url('{{home.localUrl(post.data.image)}}');background-size: cover;background-position: center;">
+    <div class="row">
+      <div id="search-results" class="col-md-12">
+        <h4>Results</h4>
+      </div>
+      <label>Roll Delay: <rzslider rz-slider-model="home.rollDelay" rz-slider-options="home.delaySliderOptions"></rzslider> </label>
+      <button ng-if="!home.imagesRolling" ng-click="home.startRolling($event)"
+      class="btn btn-success my-2 my-sm-0 roll-control" type="submit">Start Rolling</button>
+      <button ng-if="home.imagesRolling" ng-click="home.stopRolling($event)"
+      class="btn btn-warning my-2 my-sm-0 roll-control" type="submit">Stop Rolling</button>
+    </div>
+    <div class="row">
+      <div id="search-results" class="col-md-12">
+          <div class='single-search-result' ng-repeat="post in home.imageArray track by $index"
+          ng-click="home.setCurrentImage($index)" ng-class="{selected: $index == home.selectedImageId }" >
+          <img src="{{home.localUrl(post.data.image)}}" alt="" imageloaded>
+        </div>
       </div>
     </div>
   </div>

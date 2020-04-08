@@ -96,7 +96,7 @@ module.exports = function(app, express) {
     ret = [];
     var subfiles = files.slice(0, limit);
     subfiles.forEach(file => {
-        obj = {data: {image: file}, booru: {domain: "local"}, file_url: "./assets/img/download"+file};
+        obj = {data: {image: file}, booru: {domain: "local"}, file_url: "./assets/img/download/"+file};
         ret.push(obj);
       });
     res.json(ret);
