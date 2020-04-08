@@ -2,7 +2,7 @@ angular.module('viewerCtrl', [])
 .controller('viewerController', function($scope, $interval, Booru) {
 	var vm = this;
 
-	vm.img_data = {};
+	vm.img_data = Booru.getCurrentImage();
 
 	vm.hasImage = function(){
 		if (typeof(vm.img_data.file_name) === "undefined"){
@@ -12,18 +12,16 @@ angular.module('viewerCtrl', [])
 		}
 	}
 
-	vm.getCurrentImage = function(){
-		Booru.getCurrentImage()
-			.then(function(ret){
-				vm.img_data = ret.data;
-				if (vm.hasImage()){
-					ppanels = document.getElementsByClassName("pornpanel")
-					for (let p of ppanels) {
-					   p.setAttribute("src", './assets/img/download/' + vm.img_data.file_name );
-					}
+	$scope.$watch('vm.img_data', function(nv, ov){
+		if(nv != ov){
+			if (vm.hasImage()){
+				ppanels = document.getElementsByClassName("pornpanel")
+				for (let p of ppanels) {
+				   p.setAttribute("src", './assets/img/download/' + vm.img_data.file_name );
 				}
-			})
-	}
+			}
+		}
+	})
 
 	document.addEventListener('keypress', (event) => {
 	  const keyName = event.key;
@@ -43,11 +41,5 @@ angular.module('viewerCtrl', [])
 		}
 		document.getElementById("panel-6").setAttribute("rotation", rotation)
 	});
-
-	refreshImgInterval = $interval(vm.getCurrentImage, 1000);
-
-	$scope.$on("$destroy", function(){
-        $interval.cancel(refreshImgInterval);
-    });
 
 });

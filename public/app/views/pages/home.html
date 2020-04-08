@@ -21,7 +21,7 @@
     <div class="row">
       <div id="search-results" class="col-md-12">
           <div class='single-search-result' ng-repeat="post in home.imageArray track by $index"
-          ng-click="home.setCurrentImage($index)" ng-class="{selected: $index == home.selectedImageId }" >
+          ng-click="home.doSetCurrentImage($event, $index)" ng-class="{selected: $index == home.selectedImageId }" >
           <img src="{{home.localUrl(post.data.image)}}" alt="" imageloaded>
         </div>
       </div>
