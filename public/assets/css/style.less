@@ -83,12 +83,15 @@ html, body {
 
 #main-content {
 	position: relative;
-	margin-top: 20px;
 }
 
 #content-views.ng-enter, #content-views.ng-leave{
 	width:100%;
 	position:absolute;
+}
+
+#content-views{
+	padding-top: 20px;
 }
 
 #content-views.ng-enter{
@@ -168,6 +171,28 @@ html, body {
 		object-fit: contain;
 		object-position: center;
 	}
+}
+
+.viewer-control{
+	position : fixed;
+	display: block;
+	top: 0;
+	bottom: 0;
+	width: 50px;
+	background-color: rgba(0,0,0,0.1);
+
+	a {
+		color: white;
+		position: absolute;
+		height: 100%;
+		width: 100%;
+		line-height: 100%;
+  		text-align: center;
+	}
+}
+
+.viewer-control#next-image{
+	right: 0;
 }
 
 #vr-show{

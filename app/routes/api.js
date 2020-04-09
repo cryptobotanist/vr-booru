@@ -4,6 +4,7 @@ var Booru 	= require('booru');
 var request = require('request');
 var downloader = require('image-downloader');
 var fs = require('fs');
+var path = require('path');
 
 var fixUrl = function(url){
 	return url.replace('/images', '//images')
@@ -93,6 +94,23 @@ module.exports = function(app, express) {
     res.json(ret);
     })
 
+  })
+
+  apiRouter.post('/images/clear', function(req, res){
+    const directory = './public/assets/img/download/';
+    if (req.body.passphrase == config.delete_password){
+      fs.readdir(directory, (err, files) => {
+        if (err) throw err;
+        for (const file of files) {
+          fs.unlink(path.join(directory, file), err => {
+            if (err) throw err;
+          });
+        }
+      });
+      res.json({ success : true, message: 'images deleted!'})
+    } else {
+      res.json({ success : false, message: 'bad password'})
+    }
   })
 
   apiRouter.get('/search/:site/:tags', function(req, res){

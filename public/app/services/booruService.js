@@ -1,24 +1,17 @@
 angular.module('booruService', [])
-  .factory('Booru', function($http) {
+  .factory('Booru', function($http, $interval) {
     var booruFactory = {};
 
     var currentImageId = -1;
     var currentSearchResult = [];
     var currentImage = {};
-
-    // TODO: Leave UI stuff here but handle search and roll on Service
-    // We will receive updates here through bindings, and will operate the Service through here
-    // but the service will be re-searching and rolling the data on it's own
-    // so we can go to another tab and keep receiving updates there
-    // Also try to track timeout on a progress bar on the viewer or smth
-
-    availableSites = [
-      {name : "Safebooru", short: "sb", explicit: false },
-      {name : "Gelbooru", short: "gb", explicit: true },
-      {name : "Rule34", short: "r34", explicit: true },
-      {name : "RealBooru", short: "rb", explicit: true },
-      {name : "TheBigImageBoard", short: "tbib", explicit: true },
-    ]
+    var rolling = false;
+    var rollDelay = 3;
+    var mixMode = false;
+    var rollInterval;
+    var currentImageCount = 10;
+    var currentQuery = "";
+    var currentSelectedSite = null;
 
     booruFactory.setCurrentImage = function(booruResult) {
       currentImage =
@@ -46,6 +39,80 @@ angular.module('booruService', [])
     booruFactory.getCurrentImageId = function(){
       return currentImageId;
     }
+
+    booruFactory.isRolling = function(){
+      return rolling;
+    }
+
+    booruFactory.setRolling = function(roll){
+      rolling = roll;
+      if (roll){
+        rollInterval = $interval(rollImage, rollDelay*1000)
+      } else {
+        $interval.cancel(rollInterval);
+      }
+    }
+
+    var rollImage = function(){
+      if (rolling){
+        if ((currentImageId + 1) % currentSearchResult.length == 0){
+          if (mixMode){
+            console.log("REMIXING FROM SERVICE")
+            booruFactory.localMix(currentImageCount).then(function(ret){ booruFactory.setCurrentSearchResult(ret.data) })
+          } else {
+            console.log("RESEARCHING FROM SERVICE")
+            booruFactory.searchBooru(currentSelectedSite.short, currentQuery, currentImageCount, currentSelectedSite.explicit)
+              .then(function(ret){ booruFactory.setCurrentSearchResult(ret.data) })
+          }
+          currentImageId = 0;
+          rolling = true;
+        }
+        currentImageId = (currentImageId + 1) % currentSearchResult.length;
+        booruFactory.setCurrentImage(currentSearchResult[currentImageId]);
+      }
+    };
+
+    booruFactory.getRollDelay = function(){
+      return rollDelay;
+    }
+
+    booruFactory.setRollDelay = function(delay){
+      rollDelay = delay;
+    }
+
+    booruFactory.isMixMode = function(){
+      return mixMode;
+    }
+
+    booruFactory.setMixMode = function(mix){
+      mixMode = mix;
+    }
+
+    booruFactory.getCurrentQuery = function(){
+      return currentQuery
+    }
+
+    booruFactory.setCurrentQuery = function(query){
+      currentQuery = query;
+    }
+
+    booruFactory.getCurrentImageCount = function(){
+      return currentImageCount;
+    }
+
+    booruFactory.setCurrentImageCount = function(imageCount){
+      currentImageCount = imageCount;
+    }
+
+    
+    booruFactory.getCurrentSelectedSite = function(){
+      return currentSelectedSite;
+    }
+
+    booruFactory.setCurrentSelectedSite = function(site){
+      currentSelectedSite = site;
+    }
+    
 
     booruFactory.searchBooru = function(site, tags, limit, explicit) {
       if (explicit){
@@ -85,6 +152,10 @@ angular.module('booruService', [])
           }
       });
     };
+
+    booruFactory.deleteImages = function(passphrase){
+      return $http.post('/api/images/clear', {'passphrase' : passphrase})
+    }
 
     return booruFactory;
   })

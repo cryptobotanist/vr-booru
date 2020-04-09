@@ -1,7 +1,6 @@
 angular.module('viewerCtrl', [])
-.controller('viewerController', function($scope, $interval, Booru) {
+.controller('viewerController', function($scope, Booru) {
 	var vm = this;
-
 	vm.img_data = Booru.getCurrentImage();
 
 	vm.hasImage = function(){
@@ -12,8 +11,9 @@ angular.module('viewerCtrl', [])
 		}
 	}
 
-	$scope.$watch('vm.img_data', function(nv, ov){
-		if(nv != ov){
+	$scope.$watch(function () { return Booru.getCurrentImage() },
+		function (value) { 
+			vm.img_data = value;
 			if (vm.hasImage()){
 				ppanels = document.getElementsByClassName("pornpanel")
 				for (let p of ppanels) {
@@ -21,7 +21,11 @@ angular.module('viewerCtrl', [])
 				}
 			}
 		}
-	})
+	);
+
+	vm.shiftImage = function(delta){
+		//Booru.shiftImage(delta);
+	}
 
 	document.addEventListener('keypress', (event) => {
 	  const keyName = event.key;
