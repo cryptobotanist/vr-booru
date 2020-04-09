@@ -55,22 +55,36 @@ angular.module('booruService', [])
 
     var rollImage = function(){
       if (rolling){
-        if ((currentImageId + 1) % currentSearchResult.length == 0){
-          if (mixMode){
-            console.log("REMIXING FROM SERVICE")
-            booruFactory.localMix(currentImageCount).then(function(ret){ booruFactory.setCurrentSearchResult(ret.data) })
-          } else {
-            console.log("RESEARCHING FROM SERVICE")
-            booruFactory.searchBooru(currentSelectedSite.short, currentQuery, currentImageCount, currentSelectedSite.explicit)
-              .then(function(ret){ booruFactory.setCurrentSearchResult(ret.data) })
-          }
-          currentImageId = 0;
-          rolling = true;
-        }
-        currentImageId = (currentImageId + 1) % currentSearchResult.length;
-        booruFactory.setCurrentImage(currentSearchResult[currentImageId]);
+        booruFactory.shiftImage(1);
       }
     };
+
+    booruFactory.shiftImage = function(delta){
+      if ((currentImageId + delta) % currentSearchResult.length <= 0 && (currentImageId + delta) != 0){
+        if((currentImageId + delta) % currentSearchResult.length == 0){
+          currentImageId = 0;
+        } else {
+          currentImageId = currentSearchResult.length-1;
+        }
+        if (mixMode){
+          console.log("REMIXING FROM SERVICE")
+          booruFactory.localMix(currentImageCount).then(function(ret){ booruFactory.setCurrentSearchResult(ret.data);
+            booruFactory.setCurrentImage(currentSearchResult[currentImageId]);
+            booruFactory.setCurrentImageId(currentImageId);})
+        } else {
+          console.log("RESEARCHING FROM SERVICE")
+          booruFactory.searchBooru(currentSelectedSite.short, currentQuery, currentImageCount, currentSelectedSite.explicit)
+            .then(function(ret){ booruFactory.setCurrentSearchResult(ret.data);
+              booruFactory.setCurrentImage(currentSearchResult[currentImageId]);
+              booruFactory.setCurrentImageId(currentImageId);})
+        }
+      } else {
+        currentImageId = (currentImageId + delta) % currentSearchResult.length;
+        booruFactory.setCurrentImage(currentSearchResult[currentImageId]);
+        booruFactory.setCurrentImageId(currentImageId);
+      }
+      
+    }
 
     booruFactory.getRollDelay = function(){
       return rollDelay;

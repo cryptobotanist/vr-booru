@@ -3,47 +3,69 @@ angular.module('viewerCtrl', [])
 	var vm = this;
 	vm.img_data = Booru.getCurrentImage();
 
+	isEmptyObject = function(obj){
+		return (Object.keys(obj).length === 0 && obj.constructor === Object)
+	}
+
 	vm.hasImage = function(){
-		if (typeof(vm.img_data.file_name) === "undefined"){
+		if (isEmptyObject(vm.img_data)){
 			return false;
 		} else {
 			return true;
 		}
 	}
 
+	vm.shiftImage = function(delta){
+		Booru.shiftImage(delta);
+		
+	}
+
+	var keyMove = function(event){
+		const keyName = event.key;
+	  	switch(keyName) {
+			case "x":
+				vm.shiftImage(-1);
+				break;
+			case "c":
+				vm.shiftImage(1);
+				break;
+			case " ":
+				vm.shiftImage(1);
+				break;
+		}
+		$scope.$apply();
+	}
+
 	$scope.$watch(function () { return Booru.getCurrentImage() },
-		function (value) { 
-			vm.img_data = value;
-			if (vm.hasImage()){
-				ppanels = document.getElementsByClassName("pornpanel")
-				for (let p of ppanels) {
-				   p.setAttribute("src", './assets/img/download/' + vm.img_data.file_name );
+		function (value) {
+			if (!isEmptyObject(value)){
+				vm.img_data = Booru.getCurrentImage();
+				if (vm.hasImage()){
+					ppanels = document.getElementsByClassName("pornpanel")
+					for (let p of ppanels) {
+					p.setAttribute("src", './assets/img/download/' + vm.img_data.file_name );
+					}
 				}
 			}
 		}
 	);
 
-	vm.shiftImage = function(delta){
-		//Booru.shiftImage(delta);
-	}
+	$scope.$watch(function () { return Booru.getCurrentImageId() },
+		function (value) { 
+				vm.img_data = Booru.getCurrentImage();
+				if (vm.hasImage()){
+					ppanels = document.getElementsByClassName("pornpanel")
+					for (let p of ppanels) {
+					p.setAttribute("src", './assets/img/download/' + vm.img_data.file_name );
+					}
+				}
+			}
+	);
 
-	document.addEventListener('keypress', (event) => {
-	  const keyName = event.key;
-		panel = document.getElementById("panel-6")
-		console.log( panel.getAttribute("rotation"));
-		rotation = panel.getAttribute("rotation")
-	  switch(keyName) {
-			case "x":
-				rotation.x = (rotation.x + 5) % 360
-				break;
-			case "c":
-				rotation.y = (rotation.y + 5) % 360
-				break;
-			case "v":
-				rotation.z = (rotation.z + 5) % 360
-				break;
-		}
-		document.getElementById("panel-6").setAttribute("rotation", rotation)
-	});
+	document.addEventListener('keypress', keyMove);
+
+	$scope.$on("$destroy", function() {
+		document.removeEventListener('keypress', keyMove);
+    });
 
 });

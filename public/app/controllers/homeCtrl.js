@@ -93,6 +93,9 @@ angular.module('homeCtrl', [])
 	localRemix = function() {
 		vm.mixMode = true;
 		Booru.setMixMode(true);
+		Booru.setCurrentImageCount(vm.imageCount);
+		Booru.setCurrentSelectedSite(vm.selectedSite);
+		Booru.setCurrentQuery(vm.query);
 		resetRollImages();
 		vm.imageArray = [];
 		Booru.localMix(vm.imageCount).then(
@@ -122,6 +125,10 @@ angular.module('homeCtrl', [])
 
 	vm.toggleRolling = function(event){
 		vm.imagesRolling = !vm.imagesRolling;
+		if(vm.selectedImageId == -1){
+			vm.selectedImageId = 0;
+			Booru.setCurrentImageId(vm.selectedImageId);
+		}
 		Booru.setRollDelay(vm.rollDelay);
 		Booru.setRolling(vm.imagesRolling);
 	}
