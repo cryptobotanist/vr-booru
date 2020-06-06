@@ -90,7 +90,7 @@ angular.module('homeCtrl', [])
 
 	vm.doLocalRemix = function(event){
 		event.preventDefault();
-		localMix();
+		localRemix();
 	}
 
 	localRemix = function() {

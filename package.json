@@ -19,7 +19,9 @@
     "browserify": "latest",
     "express": "latest",
     "image-downloader": "latest",
-    "morgan": "latest"
+    "jquery": "^3.5.1",
+    "morgan": "latest",
+    "popper": "^1.0.1"
   },
   "devDependencies": {
     "gulp": "latest",

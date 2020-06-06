@@ -20,7 +20,8 @@ gulp.task('export_libs', function(){
 	return gulp.src([
 		'node_modules/angular/*.js', 'node_modules/angular-animate/*.min.js',
 		'node_modules/angular-route/*.min.js', 'node_modules/animate.css/*.min.css',
-		'node_modules/bootstrap/dist/js/*.min.js', 'node_modules/bootstrap/dist/css/*.min.css',
+		'node_modules/jquery/dist/jquery.min.js',
+		'node_modules/bootstrap/dist/js/*.min.js', 'node_modules/bootstrap/dist/css/*',
 		'node_modules/@fortawesome/**/**', 'node_modules/angularjs-slider/dist/*'
 	])
 	.pipe(gulp.dest('public/assets/libs'))
