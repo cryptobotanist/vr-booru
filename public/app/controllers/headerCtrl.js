@@ -1,5 +1,5 @@
 angular.module('headerCtrl', [])
-.controller('headerController', function($scope, $location) {
+.controller('headerController', function($scope, $location, Booru) {
     $scope.isActive = function (viewLocation) { 
         return viewLocation === $location.path();
     };
@@ -15,4 +15,6 @@ angular.module('headerCtrl', [])
             }
         })
     };
+
+    
 });
