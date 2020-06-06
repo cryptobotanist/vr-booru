@@ -81,15 +81,6 @@ module.exports = function(app, express) {
   	res.json({message: "let's get some booties"});
   });
 
-  apiRouter.route('/current/image')
-    .post(function(req, res) {
-      global.currentImage = req.body.booruResult;
-      res.json({ "success" : true });
-    })
-    .get(function(req, res) {
-      res.json(global.currentImage)
-    });
-
   apiRouter.get('/remix', function(req, res){
     const limit = parseInt(req.query.limit);
     fs.readdir('./public/assets/img/download/', (err, files) => {

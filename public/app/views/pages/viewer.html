@@ -1,9 +1,12 @@
-<div class="container" ng-if="viewer.hasImage()">
-    <div class="image-loader">
-      <img class='viewer-result' ng-src={{viewer.img_data.local_url}} />
-    </div>
+<div class="container" >
+  <div ng-if="!viewer.hasImage()">
+    <h2>Go search some stuff first!</h2>
+  </div>
+  <div class="image-loader" ng-if="viewer.hasImage()">
+    <img imageloaded class='viewer-result' ng-src={{viewer.img_data.local_url}} />
+  </div>
 </div>
-<div class="container" ng-if="!viewer.hasImage()">
-  <h2>Go search some stuff first!</h2>
-</div>
+<div class="viewer-control" id='prev-image' ng-if="viewer.hasImage()" ng-click="viewer.shiftImage(-1)"><a href="#"><i class="fas fa-chevron-left"></i></a></div>
+<div class="viewer-control" id='next-image' ng-if="viewer.hasImage()" ng-click="viewer.shiftImage(1)"><a href="#"><i class="fas fa-chevron-right"></i></a></div>
+
 
