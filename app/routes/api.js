@@ -67,23 +67,6 @@ async function downloadIMG(url, dest) {
   }
 }
 
-apiRouter.post('/images/clear', function(req, res){
-  const directory = './public/assets/img/download/';
-  if (req.body.passphrase == config.delete_password){
-    fs.readdir(directory, (err, files) => {
-      if (err) throw err;
-      for (const file of files) {
-        fs.unlink(path.join(directory, file), err => {
-          if (err) throw err;
-        });
-      }
-    });
-    res.json({ success : true, message: 'images deleted!'})
-  } else {
-    res.json({ success : false, message: 'bad password'})
-  }
-})
-
 // Waiting for all images to being processed (i.e. transformed to base64)
 // is very slow. Search first, process later?
 // 1. Quick search to get some preliminary results (use dummy thumbnail)
@@ -119,6 +102,23 @@ module.exports = function(app, express) {
     res.json(ret);
     })
 
+  })
+
+  apiRouter.post('/images/clear', function(req, res){
+    const directory = './public/assets/img/download/';
+    if (req.body.passphrase == config.delete_password){
+      fs.readdir(directory, (err, files) => {
+        if (err) throw err;
+        for (const file of files) {
+          fs.unlink(path.join(directory, file), err => {
+            if (err) throw err;
+          });
+        }
+      });
+      res.json({ success : true, message: 'images deleted!'})
+    } else {
+      res.json({ success : false, message: 'bad password'})
+    }
   })
 
   apiRouter.get('/search/:site/:tags', function(req, res){
