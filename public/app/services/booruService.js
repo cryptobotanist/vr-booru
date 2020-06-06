@@ -53,5 +53,9 @@ angular.module('booruService', [])
       });
     };
 
+    booruFactory.deleteImages = function(passphrase){
+      return $http.post('/api/images/clear', {'passphrase' : passphrase})
+    }
+
     return booruFactory;
   })
