@@ -4,6 +4,7 @@ var Booru 	= require('booru');
 var request = require('request');
 var downloader = require('image-downloader');
 var fs = require('fs');
+var path = require('path');
 
 var fixUrl = function(url){
 	return url.replace('/images', '//images')
