@@ -2,7 +2,7 @@
   <form ng-submit="home.doSearchImages($event)" class="form-inline my-2 my-lg-0">
     <input class="form-control mr-sm-2" type="search" ng-model="home.query" id="inlineFormInput2" placeholder="Drop some tags" aria-label="Search">
     <select ng-model="home.selectedSite" ng-options="s.name for s in home.availableSites"
-      ng-init="home.selectedSite = home.availableSites[home.selectedSiteIndex]" class="form-control mb-2 mr-sm-2"></select>
+      ng-init="home.selectedSite = home.availableSites[0]" class="form-control mb-2 mr-sm-2"></select>
     <rzslider rz-slider-model="home.imageCount" rz-slider-options="home.imageCountSliderOptions"></rzslider>
     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
     <button ng-click="home.doLocalRemix($event)" class="btn btn-outline-danger my-2 my-sm-0">Local Remix</button>
@@ -13,15 +13,15 @@
         <h4>Results</h4>
       </div>
       <label>Roll Delay: <rzslider rz-slider-model="home.rollDelay" rz-slider-options="home.delaySliderOptions"></rzslider> </label>
-      <button ng-if="!home.imagesRolling" ng-click="home.toggleRolling($event)"
+      <button ng-if="!home.imagesRolling" ng-click="home.startRolling($event)"
       class="btn btn-success my-2 my-sm-0 roll-control" type="submit">Start Rolling</button>
-      <button ng-if="home.imagesRolling" ng-click="home.toggleRolling($event)"
+      <button ng-if="home.imagesRolling" ng-click="home.stopRolling($event)"
       class="btn btn-warning my-2 my-sm-0 roll-control" type="submit">Stop Rolling</button>
     </div>
     <div class="row">
       <div id="search-results" class="col-md-12">
           <div class='single-search-result' ng-repeat="post in home.imageArray track by $index"
-          ng-click="home.doSetCurrentImage($event, $index)" ng-class="{selected: $index == home.selectedImageId }" >
+          ng-click="home.setCurrentImage($index)" ng-class="{selected: $index == home.selectedImageId }" >
           <img src="{{home.localUrl(post.data.image)}}" alt="" imageloaded>
         </div>
       </div>
