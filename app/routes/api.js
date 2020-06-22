@@ -92,7 +92,7 @@ module.exports = function(app, express) {
 
   apiRouter.get('/remix', function(req, res){
     const limit = parseInt(req.query.limit);
-    fs.readdir('./public/assets/img/download/', (err, files) => {
+    fs.readdir('./public/assets/img/download/fullres/', (err, files) => {
     shuffleArray(files);
     ret = [];
     var subfiles = files.slice(0, limit);
@@ -107,14 +107,17 @@ module.exports = function(app, express) {
 
   apiRouter.post('/images/clear', function(req, res){
     const directory = './public/assets/img/download/';
+    const subdirs = ['thumbs/', 'fullres/'];
     if (req.body.passphrase == config.delete_password){
-      fs.readdir(directory, (err, files) => {
-        if (err) throw err;
-        for (const file of files) {
-          fs.unlink(path.join(directory, file), err => {
-            if (err) throw err;
-          });
-        }
+      subdirs.forEach(subdir => {
+        fs.readdir(directory + subdirs, (err, files) => {
+          if (err) throw err;
+          for (const file of files) {
+            fs.unlink(path.join(directory, file), err => {
+              if (err) throw err;
+            });
+          }
+        });
       });
       res.json({ success : true, message: 'images deleted!'})
     } else {
@@ -128,6 +131,8 @@ module.exports = function(app, express) {
         limit = parseInt(req.query.limit) || 10;
         tags.push('-webm');
         tags.push('-furry');
+        tags.push('-feral');
+        tags.push('-anthro');
         tags.push('-anthro');
         tags.push('-lolicon');
         tags.push('-shotacon');
@@ -139,14 +144,18 @@ module.exports = function(app, express) {
           processedImages.forEach( pimg => {
             var sampleUrl = site_config[pimg.booru.domain].sample_template
             var imageUrl = site_config[pimg.booru.domain].image_template
+            var thumbUrl = site_config[pimg.booru.domain].thumb_template
             sampleUrl = sampleUrl.replace("{directory}", pimg.data.directory)
             sampleUrl = sampleUrl.replace("{image}", pimg.data.image)
             imageUrl = imageUrl.replace("{directory}", pimg.data.directory)
             imageUrl = imageUrl.replace("{image}", pimg.data.image)
+            thumbUrl = thumbUrl.replace("{directory}", pimg.data.directory)
+            thumbUrl = thumbUrl.replace("{image}", pimg.data.image)
             console.log(fixUrl(imageUrl))
             // Try to get both, one of them will work. Do not handle the exception
-            downloadIMG(fixUrl(sampleUrl), './public/assets/img/download/')
-            downloadIMG(fixUrl(imageUrl), './public/assets/img/download/')
+            downloadIMG(fixUrl(thumbUrl), './public/assets/img/download/thumbs/')
+            downloadIMG(fixUrl(sampleUrl), './public/assets/img/download/fullres/')
+            downloadIMG(fixUrl(imageUrl), './public/assets/img/download/fullres/')
           });
           console.log("DONE PROCESSING!")
           res.json(processedImages);

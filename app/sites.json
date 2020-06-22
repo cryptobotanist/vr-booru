@@ -1,27 +1,32 @@
 {
 	"gelbooru.com": {
 		"domain": "gelbooru.com",
-        "sample_template" : "https://img2.gelbooru.com/samples/{directory}/sample_{image}",
+		"sample_template" : "https://img2.gelbooru.com/samples/{directory}/sample_{image}",
+		"thumb_template" : "https://img2.gelbooru.com/thumbnails/{directory}/thumbnail_{image}",
         "image_template" : "https://img2.gelbooru.com/images/{directory}/{image}"
 	},
 	"rule34.xxx": {
 		"domain": "rule34.xxx",
-        "sample_template" : "https://img.rule34.xxx/samples/{directory}/sample_{image}",
+		"sample_template" : "https://img.rule34.xxx/samples/{directory}/sample_{image}",
+		"thumb_template" : "https://rule34.xxx/thumbnails/{directory}/thumbnail_{image}",
         "image_template" : "https://rule34.xxx/images/{directory}/{image}"
 	},
 	"realbooru.com": {
 		"domain": "realbooru.com",
 		"sample_template" : "https://realbooru.com/samples/{directory}/sample_{image}",
+		"thumb_template" : "https://realbooru.com/thumbnails/{directory}/thumbnail_{image}",
         "image_template" : "https://realbooru.com/images/{directory}/{image}"
 	},
 	"tbib.org": {
 		"domain": "tbib.org",
 		"sample_template" : "https://tbib.org/images/{directory}/{image}",
+		"thumb_template" : "https://tbib.org/thumbnails/{directory}/thumbnail_{image}",
         "image_template" : "https://tbib.org/images/{directory}/{image}"
 	},
 	"safebooru.org": {
 		"domain": "safebooru.org",
 		"sample_template" : "https://safebooru.org/samples/{directory}/sample_{image}",
+		"thumb_template" : "https://safebooru.org/thumbnails/{directory}/thumbnail_{image}",
         "image_template" : "https://safebooru.org/images/{directory}/{image}"
 	}
 }

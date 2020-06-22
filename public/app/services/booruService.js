@@ -30,7 +30,14 @@ angular.module('booruService', [])
     }
 
     booruFactory.localUrl = function(name){
-      return "./assets/img/download/" + name;
+      return "./assets/img/download/fullres/" + name;
+    }
+
+    booruFactory.thumbUrl = function(name){
+      if (name.includes("sample_")){
+        name = name.replace("sample_", "")
+      }
+      return "./assets/img/download/thumbs/thumbnail_" + name;
     }
 
     booruFactory.loadBase64Image = function (url, callback) {

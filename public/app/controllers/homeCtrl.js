@@ -69,6 +69,10 @@ angular.module('homeCtrl', [])
 		return Booru.localUrl(name);
 	}
 
+	vm.thumbUrl = function(name){
+		return Booru.thumbUrl(name);
+	}
+
 	vm.doSearchImages = function(event){
 		event.preventDefault();
 		searchImages();
